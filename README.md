@@ -10,13 +10,15 @@ cargo run
 Requires [Spike](https://github.com/riscv-software-src/riscv-isa-sim).
 
 ## TODO
-- Use libgloss to figure out how HTIF works and write documentation for it.
+- sync syscall (https://stackoverflow.com/questions/72369202/are-mutable-static-primitives-actually-unsafe-if-single-threaded)
+- make work in release mode
 - exit properly
 - core::write
 - trap handling
 - panic handling
 
 ## Plans
+- Share rust code/interface with fesvr for syscalls
 - Would be cool to debug with gdb using openocd: https://docs.rust-embedded.org/book/start/hardware.html
 - Better cargo commands (cargo run with spike -d, build options, specify targets...)
 - Improve organization, HTIF as its own crate?

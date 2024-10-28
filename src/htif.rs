@@ -1,12 +1,6 @@
-#[repr(C)]
-struct Magic {
-    n: i64,
-    arg0: i64,
-    arg1: i64,
-    arg2: i64,
-}
+use core::ptr::write_volatile;
 
-// TODO: maybe goes in their own elf section?
+// TODO: maybe goes in their own elf section (use link_section attribute)?
 #[no_mangle]
 #[allow(non_upper_case_globals)]
 static mut tohost: *const () = core::ptr::null_mut();
@@ -14,21 +8,26 @@ static mut tohost: *const () = core::ptr::null_mut();
 #[allow(non_upper_case_globals)]
 static mut fromhost: i64 = 0;
 
-pub fn htif_syscall() {
+// TODO: maybe this whole function should be unsafe? What is safe and unsafe?
+pub fn htif_syscall(n: u64, arg0: u64, arg1: u64, arg2: u64) {
     unsafe {
-        let s = "hello rust.\n" as *const str;
-        let buf: *const Magic = &Magic { n: 64, arg0: 1, arg1: s as *const () as i64, arg2: 13 };
-        tohost = buf as *const ();
+        // Array layouts explained here, seems to be the same as layout in C:
+        // https://rust-lang.github.io/unsafe-code-guidelines/layout/arrays-and-slices.html
+        // struct with repr(C) would also work
+
+        // Create an empty array, then use write_volatile to make sure values are written on the
+        // stack.
+        let mut buf: [u64; 4] = [0; 4];
+        write_volatile(&mut buf, [n, arg0, arg1, arg2]);
+        let ptr: *const [u64] = &buf;
+
+        write_volatile(&raw mut tohost, ptr as *const ());
         while fromhost == 0 { }
+    }
+}
 
-        // let s = "hello world\n" as *const str;
-        // let buf: *const [i64] = &[64, 1, s as *const () as i64, 13];
-        // tohost = buf as *const ();
-
-        // while fromhost == 0 { }
-        // core::ptr::wri
-        // let magic = Magic{ a: 64, b: 0, c: 0 };
-        // let ptr = &magic as *const Magic;
-        // tohost = ptr as *mut i64;
-    };
+pub fn print() {
+    let hello = "hello rust.\n" ;
+    let s = hello as *const str;
+    htif_syscall(64, 1, s as *const () as u64, 13);
 }

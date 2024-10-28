@@ -3,7 +3,7 @@
 
 mod htif;
 
-use htif::htif_syscall;
+use htif::print;
 
 
 // A cleaner way is to learn rust macro and implement #[entry]: https://docs.rs/cortex-m-rt/latest/cortex_m_rt/attr.entry.html
@@ -13,7 +13,7 @@ pub extern "C" fn _init() {
     let y: i64 = 39;
 
     let z = x + y;
-    htif_syscall();
+    print();
 
     // unsafe { let src = z as *const (); core::ptr::read_volatile(src) }
     // for c in b"Hello from Rust!".iter() {
@@ -36,9 +36,9 @@ use core::panic::PanicInfo;
 #[panic_handler]
 #[no_mangle]
 pub fn panic(_info: &PanicInfo) -> ! {
-    let x: i64 = 19;
-    let y: i64 = 47;
-
-    let z = x + y;
-    loop{}
+    loop {
+        let x: i64 = 19;
+        let y: i64 = 47;
+        let z = x + y;
+    }
 }
