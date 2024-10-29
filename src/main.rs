@@ -3,7 +3,7 @@
 
 mod htif;
 
-use htif::print;
+use htif::{htif_fail, print};
 
 
 // A cleaner way is to learn rust macro and implement #[entry]: https://docs.rs/cortex-m-rt/latest/cortex_m_rt/attr.entry.html
@@ -13,7 +13,8 @@ pub extern "C" fn _init() {
     let y: i64 = 39;
 
     let z = x + y;
-    print();
+    htif_fail(30);
+    // print();
 
     // unsafe { let src = z as *const (); core::ptr::read_volatile(src) }
     // for c in b"Hello from Rust!".iter() {

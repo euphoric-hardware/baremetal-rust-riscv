@@ -8,7 +8,7 @@ static mut tohost: *const () = core::ptr::null_mut();
 #[allow(non_upper_case_globals)]
 static mut fromhost: i64 = 0;
 
-// TODO: maybe this whole function should be unsafe? What is safe and unsafe?
+// TODO: maybe this whole function should be unsafe? Depends on spec of HTIF/invalid syscalls
 pub fn htif_syscall(n: u64, arg0: u64, arg1: u64, arg2: u64) {
     unsafe {
         // Array layouts explained here, seems to be the same as layout in C:
@@ -22,6 +22,13 @@ pub fn htif_syscall(n: u64, arg0: u64, arg1: u64, arg2: u64) {
         let ptr: *const [u64] = &buf;
 
         write_volatile(&raw mut tohost, ptr as *const ());
+        while fromhost == 0 { }
+    }
+}
+
+pub fn htif_fail(n: i64) {
+    unsafe {
+        write_volatile(&raw mut tohost, (n*2 + 1) as *const ());
         while fromhost == 0 { }
     }
 }
