@@ -3,18 +3,32 @@
 
 mod htif;
 
-use htif::{htif_fail, print};
+use htif::{htif_fail, HostFile};
+use core::fmt::Write;
 
 
 // A cleaner way is to learn rust macro and implement #[entry]: https://docs.rs/cortex-m-rt/latest/cortex_m_rt/attr.entry.html
 #[no_mangle]
 pub extern "C" fn _init() {
-    let x: i64 = 17;
-    let y: i64 = 39;
+    main();
 
-    let z = x + y;
-    htif_fail(30);
-    // print();
+    loop{}
+}
+
+fn main() {
+    let x = 10;
+    let y = 5;
+    writeln!(HostFile::from_fd(1), "Hello {} {}", x, y).unwrap();
+    writeln!(HostFile::stdout(), "Hello {}", x+y).unwrap();
+
+    for i in 0..5 {
+        writeln!(HostFile::from_fd(1), "{}", i).unwrap();
+    }
+    writeln!(HostFile::stdout(), "{:?}", [1, 2, 3, 4, 5]).unwrap();
+    writeln!(HostFile::stdout(), "{:?}", (1, 2, 3)).unwrap();
+
+    // Panic!
+    // let x = 1 / (x-y*2);
 
     // unsafe { let src = z as *const (); core::ptr::read_volatile(src) }
     // for c in b"Hello from Rust!".iter() {
@@ -22,8 +36,6 @@ pub extern "C" fn _init() {
     //         *uart = *c as u8;
     //     }
     // }
-
-    loop{}
 }
 
 // Needed for crt_riscv_test.S
@@ -37,9 +49,7 @@ use core::panic::PanicInfo;
 #[panic_handler]
 #[no_mangle]
 pub fn panic(_info: &PanicInfo) -> ! {
-    loop {
-        let x: i64 = 19;
-        let y: i64 = 47;
-        let z = x + y;
-    }
+    writeln!(HostFile::stdout(), "{}", _info).unwrap();
+    htif_fail(24);
+    loop {}
 }
