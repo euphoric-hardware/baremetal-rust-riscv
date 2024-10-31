@@ -10,12 +10,12 @@ cargo run
 Requires [Spike](https://github.com/riscv-software-src/riscv-isa-sim).
 
 ## TODO
-- sync syscall (https://stackoverflow.com/questions/72369202/are-mutable-static-primitives-actually-unsafe-if-single-threaded)
-- make work in release mode
-- exit properly
-- core::write
-- trap handling
-- panic handling
+- [ ] sync syscall (https://stackoverflow.com/questions/72369202/are-mutable-static-primitives-actually-unsafe-if-single-threaded)
+- [x] make work in release mode
+- [ ] exit properly
+- [x] core::write
+- [ ] trap handling
+- [ ] panic handling
 
 ## Plans
 - Share rust code/interface with fesvr for syscalls
@@ -23,9 +23,9 @@ Requires [Spike](https://github.com/riscv-software-src/riscv-isa-sim).
 - Better cargo commands (cargo run with spike -d, build options, specify targets...)
 - Improve organization, HTIF as its own crate?
 - HAL / board config? IDK how hardware works
-- Other examples use memory.x and include it in linker script to sepecify memory layout, could be useful/cleaner.
-- What should be the init assembly? Copy from other projects? minimal? HW dependent?
+- What should be the init assembly and linker scripts? Copy from other projects? minimal? HW dependent?
     - Not sure what zeroing registers and other magic does
+- Use #[entry]
 
 ## Resources
 HTIF implementations:
@@ -35,4 +35,4 @@ HTIF implementations:
 Rust:
 - Baremetal rust: https://docs.rust-embedded.org/book/intro/index.html
 
-Similar work: https://github.com/riscv-software-src/riscv-isa-sim
+Similar work: https://github.com/search?q=riscv+baremetal+lang%3Arust&type=repositories

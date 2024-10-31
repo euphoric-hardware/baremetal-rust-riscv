@@ -53,7 +53,8 @@ pub fn htif_syscall(n: u64, arg0: u64, arg1: u64, arg2: u64) {
 pub fn htif_fail(n: i64) {
     unsafe {
         write_volatile(&raw mut tohost, (n*2 + 1) as *const ());
-        while fromhost == 0 { }
+        while read_volatile(&raw const fromhost) == 0 { }
+        write_volatile(&raw mut fromhost, 0);
     }
 }
 
