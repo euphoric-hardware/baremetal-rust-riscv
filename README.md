@@ -27,6 +27,10 @@ Requires [Spike](https://github.com/riscv-software-src/riscv-isa-sim).
     - Not sure what zeroing registers and other magic does
 - Use #[entry]
 
+### Benchmarks
+- Port benchmarks from riscv tests
+- Cycles should be similar?
+
 ## Resources
 HTIF implementations:
 - https://github.com/ucb-bar/libgloss-htif
