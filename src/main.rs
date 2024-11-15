@@ -10,37 +10,34 @@ use htif::{htif_fail, HostFile};
 use hw_util::csr_test;
 use core::fmt::Write;
 
+use riscv_rt::entry;
 
-// A cleaner way is to learn rust macro and implement #[entry]: https://docs.rs/cortex-m-rt/latest/cortex_m_rt/attr.entry.html
-#[no_mangle]
-pub extern "C" fn _init() {
-    main();
 
-    loop{}
-}
-
-fn main() {
+#[entry]
+fn main() -> ! {
     let x = 10;
     let y = 5;
     let mut z = x + y;
     z = z + z + 3;
-    run_median();
-
-    let num = csr_test();
-
-    writeln!(HostFile::stdout(), "{:?}", num).unwrap();
-
-    writeln!(HostFile::stdout(), "{}", z).unwrap();
-
-
-    writeln!(HostFile::from_fd(1), "Hello {} {}", x, y).unwrap();
-    writeln!(HostFile::stdout(), "Hello {}", x+y).unwrap();
-
-    for i in 0..5 {
-        writeln!(HostFile::from_fd(1), "{}", i).unwrap();
-    }
-    writeln!(HostFile::stdout(), "{:?}", [1, 2, 3, 4, 5]).unwrap();
-    writeln!(HostFile::stdout(), "{:?}", (1, 2, 3)).unwrap();
+    htif_fail(1);
+    // run_median();
+    //
+    // let num = csr_test();
+    //
+    // writeln!(HostFile::stdout(), "{:?}", num).unwrap();
+    //
+    // writeln!(HostFile::stdout(), "{}", z).unwrap();
+    //
+    //
+    // writeln!(HostFile::from_fd(1), "Hello {} {}", x, y).unwrap();
+    // writeln!(HostFile::stdout(), "Hello {}", x+y).unwrap();
+    //
+    // for i in 0..5 {
+    //     writeln!(HostFile::from_fd(1), "{}", i).unwrap();
+    // }
+    // writeln!(HostFile::stdout(), "{:?}", [1, 2, 3, 4, 5]).unwrap();
+    // writeln!(HostFile::stdout(), "{:?}", (1, 2, 3)).unwrap();
+    loop {}
 
     // TODO: exit properly
 
