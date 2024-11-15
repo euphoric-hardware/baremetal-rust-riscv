@@ -1,0 +1,16 @@
+/* Also see: https://github.com/riscv-software-src/riscv-tests/blob/51de00886cd28a3cf9b85ee306fb2b5ee5ab550e/benchmarks/common/test.ld */
+
+MEMORY
+{
+  FLASH : ORIGIN = 0x80000000, LENGTH = 32K
+  TMP : ORIGIN = 0x70000000, LENGTH = 32K
+}
+
+REGION_ALIAS("REGION_TEXT", FLASH);
+REGION_ALIAS("REGION_RODATA", FLASH);
+REGION_ALIAS("REGION_DATA", FLASH);
+REGION_ALIAS("REGION_BSS", FLASH);
+REGION_ALIAS("REGION_HEAP", FLASH);
+REGION_ALIAS("REGION_STACK", FLASH);
+
+/* _stext = 0x80000000; */
