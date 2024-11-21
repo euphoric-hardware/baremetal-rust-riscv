@@ -1,17 +1,9 @@
 #![no_main]
 #![no_std]
 
-mod htif;
-mod hw_util;
-mod benchmark;
-
-use benchmark::run_median;
-use htif::{htif_fail, HostFile};
-use hw_util::csr_test;
+use riscv_rust_baremetal::htif::{htif_fail, HostFile};
 use core::fmt::Write;
 
-
-// A cleaner way is to learn rust macro and implement #[entry]: https://docs.rs/cortex-m-rt/latest/cortex_m_rt/attr.entry.html
 #[no_mangle]
 pub extern "C" fn _init() {
     main();
@@ -19,16 +11,12 @@ pub extern "C" fn _init() {
     loop{}
 }
 
+// A cleaner way is to learn rust macro and implement #[entry]: https://docs.rs/cortex-m-rt/latest/cortex_m_rt/attr.entry.html
 fn main() {
     let x = 10;
     let y = 5;
     let mut z = x + y;
     z = z + z + 3;
-    run_median();
-
-    let num = csr_test();
-
-    writeln!(HostFile::stdout(), "{:?}", num).unwrap();
 
     writeln!(HostFile::stdout(), "{}", z).unwrap();
 
@@ -60,13 +48,3 @@ fn main() {
 // pub extern "C" fn handle_trap() {
 //     loop {}
 // }
-
-use core::panic::PanicInfo;
-
-#[panic_handler]
-#[no_mangle]
-pub fn panic(_info: &PanicInfo) -> ! {
-    writeln!(HostFile::stdout(), "{}", _info).unwrap();
-    htif_fail(24);
-    loop {}
-}
