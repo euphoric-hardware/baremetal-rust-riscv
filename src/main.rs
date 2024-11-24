@@ -2,7 +2,7 @@
 #![no_std]
 
 use riscv_rt::entry;
-use riscv_rust_baremetal::htif::{htif_fail, HostFile};
+use riscv_rust_baremetal::htif::HostFile;
 use core::fmt::Write;
 
 #[entry]
@@ -37,9 +37,3 @@ fn main() -> ! {
     //     }
     // }
 }
-
-// Needed for crt_riscv_test.S
-// #[no_mangle]
-// pub extern "C" fn handle_trap() {
-//     loop {}
-// }
