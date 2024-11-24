@@ -7,7 +7,7 @@ use riscv::register;
 // use riscv_rust_baremetal::benchmark;
 
 use riscv_rt::entry;
-use riscv_rust_baremetal::htif::HostFile;
+use htif::HostFile;
 
 const DATA_SIZE: usize = 400;
 

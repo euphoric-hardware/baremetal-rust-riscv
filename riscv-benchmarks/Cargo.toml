@@ -1,0 +1,15 @@
+[package]
+name = "riscv-benchmarks"
+version = "0.1.0"
+edition = "2021"
+
+[build-dependencies]
+cc = "1.1.31"
+
+[dependencies]
+riscv = "0.12.1"
+riscv-rt = "0.13.0"
+htif = { path = "../htif" }
+
+[profile.release]
+strip = true

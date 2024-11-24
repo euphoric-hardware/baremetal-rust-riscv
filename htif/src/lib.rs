@@ -1,3 +1,8 @@
+#![no_std]
+
+pub mod panic_htif_print;
+
+
 use core::ptr::{read_volatile, write_volatile};
 use core::fmt;
 
@@ -63,4 +68,15 @@ pub fn write(fd: u64, s: &str) {
     let len = s.len();
     let s = s as *const str;
     htif_syscall(64, fd, s as *const () as u64, len.try_into().unwrap());
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    // #[test]
+    // fn it_works() {
+    //     let result = add(2, 2);
+    //     assert_eq!(result, 4);
+    // }
 }

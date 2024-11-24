@@ -1,17 +1,5 @@
-[package]
-name = "riscv-rust-baremetal"
-version = "0.1.0"
-edition = "2021"
-
-[[bin]]
-name = "median"
-
-[build-dependencies]
-cc = "1.1.31"
-
-[dependencies]
-riscv = "0.12.1"
-riscv-rt = "0.13.0"
-
-[profile.release]
-strip = true
+[workspace]
+members = [
+    "htif",
+    "riscv-benchmarks",
+]

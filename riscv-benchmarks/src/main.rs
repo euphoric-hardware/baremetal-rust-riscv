@@ -2,7 +2,7 @@
 #![no_std]
 
 use riscv_rt::entry;
-use riscv_rust_baremetal::htif::HostFile;
+use htif::HostFile;
 use core::fmt::Write;
 
 #[entry]
@@ -29,11 +29,4 @@ fn main() -> ! {
 
     // Panic!
     // let x = 1 / (x-y*2);
-
-    // unsafe { let src = z as *const (); core::ptr::read_volatile(src) }
-    // for c in b"Hello from Rust!".iter() {
-    //     unsafe {
-    //         *uart = *c as u8;
-    //     }
-    // }
 }

@@ -1,5 +1,5 @@
 use core::panic::PanicInfo;
-use crate::htif::{HostFile, htif_fail};
+use crate::{HostFile, htif_fail};
 use core::fmt::Write;
 pub use core::writeln;
 
