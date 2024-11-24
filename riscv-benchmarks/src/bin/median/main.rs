@@ -1,13 +1,8 @@
 #![no_main]
 #![no_std]
 
-use core::fmt::Write;
-use core::writeln;
-use riscv::register;
-// use riscv_rust_baremetal::benchmark;
-
+use riscv_benchmarks::*;
 use riscv_rt::entry;
-use htif::HostFile;
 
 const DATA_SIZE: usize = 400;
 
@@ -18,18 +13,9 @@ const VERIFY_DATA: [i32; DATA_SIZE] = core::include!("verify.in");
 #[entry]
 fn run_median() -> ! {
     let mut result: [i32; 400] = [0; 400];
+    unsafe { start_benchmark(); };
     median(DATA_SIZE, &INPUT_DATA, &mut result);
-    let x = register::mcycle::read();
-    writeln!(HostFile::stdout(), "{}", x).unwrap();
-
-    // Verifiy the data
-    for i in 0..DATA_SIZE {
-        if result[i] != VERIFY_DATA[i] {
-            panic!("BAD {} {} {}", i, result[i], VERIFY_DATA[i]);
-        }
-    }
-    loop {}
-    // TODO: exit properly
+    unsafe { verify_and_end_benchmark(&result, &VERIFY_DATA); };
 }
 
 fn median(n: usize, input: &[i32], results: &mut [i32]) {
