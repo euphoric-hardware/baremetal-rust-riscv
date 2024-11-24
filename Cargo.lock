@@ -78,11 +78,34 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8188909339ccc0c68cfb5a04648313f09621e8b87dc03095454f1a11f6c5d436"
 
 [[package]]
+name = "riscv-rt"
+version = "0.13.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "753f1bd7eb4e0003cec5e2fb60ea8e253a71d0b041bc7d1ba0fffe22e3c0294d"
+dependencies = [
+ "riscv",
+ "riscv-pac",
+ "riscv-rt-macros",
+]
+
+[[package]]
+name = "riscv-rt-macros"
+version = "0.2.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "30f19a85fe107b65031e0ba8ec60c34c2494069fe910d6c297f5e7cb5a6f76d0"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn",
+]
+
+[[package]]
 name = "riscv-rust-baremetal"
 version = "0.1.0"
 dependencies = [
  "cc",
  "riscv",
+ "riscv-rt",
 ]
 
 [[package]]

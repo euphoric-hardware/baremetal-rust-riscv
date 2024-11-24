@@ -2,12 +2,17 @@
 Rust example that compiles to baremetal riscv. Supports HTIF to communicate with host and perform proxy syscalls.
 
 ## Quick start
+Edit the configuration at `.cargo/config.toml`.
 ```
 rustup target add riscv32imac-unknown-none-elf
 rustup target add riscv64imac-unknown-none-elf
-cargo run
+cargo build
 ```
-Requires [Spike](https://github.com/riscv-software-src/riscv-isa-sim).
+
+To run a specific benchmark (Requires [Spike](https://github.com/riscv-software-src/riscv-isa-sim)):
+```
+cargo run --bin bin-name
+```
 
 ## TODO
 - [ ] sync syscall (https://stackoverflow.com/questions/72369202/are-mutable-static-primitives-actually-unsafe-if-single-threaded)

@@ -6,9 +6,17 @@ use core::writeln;
 use riscv::register;
 // use riscv_rust_baremetal::benchmark;
 
+use riscv_rt::entry;
 use riscv_rust_baremetal::htif::HostFile;
 
-pub fn run_median() {
+const DATA_SIZE: usize = 400;
+
+const INPUT_DATA: [i32; DATA_SIZE] = core::include!("data.in");
+
+const VERIFY_DATA: [i32; DATA_SIZE] = core::include!("verify.in");
+
+#[entry]
+fn run_median() -> ! {
     let mut result: [i32; 400] = [0; 400];
     median(DATA_SIZE, &INPUT_DATA, &mut result);
     let x = register::mcycle::read();
@@ -20,9 +28,11 @@ pub fn run_median() {
             panic!("BAD {} {} {}", i, result[i], VERIFY_DATA[i]);
         }
     }
+    loop {}
+    // TODO: exit properly
 }
 
-pub fn median(n: usize, input: &[i32], results: &mut [i32]) {
+fn median(n: usize, input: &[i32], results: &mut [i32]) {
     // Zero the ends
     results[0] = 0;
     results[n - 1] = 0;
@@ -51,32 +61,4 @@ pub fn median(n: usize, input: &[i32], results: &mut [i32]) {
             }
         };
     }
-}
-
-const DATA_SIZE: usize = 400;
-
-const INPUT_DATA: [i32; DATA_SIZE] = core::include!("data.in");
-
-const VERIFY_DATA: [i32; DATA_SIZE] = core::include!("verify.in");
-#[no_mangle]
-pub extern "C" fn _init() {
-    main();
-
-    loop{}
-}
-
-fn main() {
-    run_median();
-
-    // TODO: exit properly
-
-    // Panic!
-    // let x = 1 / (x-y*2);
-
-    // unsafe { let src = z as *const (); core::ptr::read_volatile(src) }
-    // for c in b"Hello from Rust!".iter() {
-    //     unsafe {
-    //         *uart = *c as u8;
-    //     }
-    // }
 }

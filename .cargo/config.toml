@@ -1,14 +1,22 @@
 [target.riscv32imac-unknown-none-elf]
 runner = "spike --isa RV32IMAFDC"
+
+# linker = "riscv32-unknown-elf-ld"
+linker = "riscv32-elf-ld"
 rustflags = [
-  "-C", "link-arg=-Tsrc/linker.ld",
+  "-C", "link-arg=-Tmemory.x",
+  "-C", "link-arg=-Tlink.x",
 ]
 
 [target.riscv64imac-unknown-none-elf]
 # runner = "spike -d"
 runner = "spike"
+
+# linker = "riscv64-unknown-elf-ld"
+linker = "riscv64-elf-ld"
 rustflags = [
-  "-C", "link-arg=-Tsrc/linker.ld",
+  "-C", "link-arg=-Tmemory.x",
+  "-C", "link-arg=-Tlink.x",
 ]
 
 [build]

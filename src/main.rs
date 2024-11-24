@@ -1,18 +1,12 @@
 #![no_main]
 #![no_std]
 
+use riscv_rt::entry;
 use riscv_rust_baremetal::htif::{htif_fail, HostFile};
 use core::fmt::Write;
 
-#[no_mangle]
-pub extern "C" fn _init() {
-    main();
-
-    loop{}
-}
-
-// A cleaner way is to learn rust macro and implement #[entry]: https://docs.rs/cortex-m-rt/latest/cortex_m_rt/attr.entry.html
-fn main() {
+#[entry]
+fn main() -> ! {
     let x = 10;
     let y = 5;
     let mut z = x + y;
@@ -31,6 +25,7 @@ fn main() {
     writeln!(HostFile::stdout(), "{:?}", (1, 2, 3)).unwrap();
 
     // TODO: exit properly
+    loop {}
 
     // Panic!
     // let x = 1 / (x-y*2);
