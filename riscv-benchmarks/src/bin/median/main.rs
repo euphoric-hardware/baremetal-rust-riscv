@@ -13,9 +13,9 @@ const VERIFY_DATA: [i32; DATA_SIZE] = core::include!("verify.in");
 #[entry]
 fn run_median() -> ! {
     let mut result: [i32; 400] = [0; 400];
-    unsafe { start_benchmark(); };
+    let benchmark_data = start_benchmark();
     median(DATA_SIZE, &INPUT_DATA, &mut result);
-    unsafe { verify_and_end_benchmark(&result, &VERIFY_DATA); };
+    verify_and_end_benchmark(&result, &VERIFY_DATA, benchmark_data);
 }
 
 fn median(n: usize, input: &[i32], results: &mut [i32]) {
