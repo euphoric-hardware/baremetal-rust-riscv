@@ -15,8 +15,7 @@ pub unsafe fn start_benchmark() {
 pub unsafe fn end_benchmark() -> ! {
     let x = register::mcycle::read();
     writeln!(HostFile::stdout(), "{}", x - MCYCLE).unwrap();
-    // TODO: exit properly
-    loop {}
+    htif::exit(0);
 }
 
 pub unsafe fn verify_and_end_benchmark<T: core::fmt::Display + core::cmp::PartialEq>(
@@ -30,6 +29,5 @@ pub unsafe fn verify_and_end_benchmark<T: core::fmt::Display + core::cmp::Partia
             panic!("BAD {} {} {}", i, result[i], expected[i]);
         }
     }
-    // TODO: exit properly
-    loop {}
+    htif::exit(0);
 }

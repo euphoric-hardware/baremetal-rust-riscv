@@ -8,5 +8,4 @@ pub use core::writeln;
 pub fn panic(_info: &PanicInfo) -> ! {
     writeln!(HostFile::stdout(), "{}", _info).unwrap();
     htif_fail(24);
-    loop {}
 }

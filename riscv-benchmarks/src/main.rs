@@ -2,7 +2,7 @@
 #![no_std]
 
 use riscv_rt::entry;
-use htif::HostFile;
+use htif::{exit, HostFile};
 use core::fmt::Write;
 
 #[entry]
@@ -24,9 +24,7 @@ fn main() -> ! {
     writeln!(HostFile::stdout(), "{:?}", [1, 2, 3, 4, 5]).unwrap();
     writeln!(HostFile::stdout(), "{:?}", (1, 2, 3)).unwrap();
 
-    // TODO: exit properly
-    loop {}
-
+    exit(0);
     // Panic!
     // let x = 1 / (x-y*2);
 }

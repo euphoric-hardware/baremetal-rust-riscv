@@ -55,12 +55,13 @@ pub fn htif_syscall(n: u64, arg0: u64, arg1: u64, arg2: u64) {
     }
 }
 
-pub fn htif_fail(n: i64) {
+pub fn htif_fail(n: i64) -> ! {
     unsafe {
         write_volatile(&raw mut tohost, (n*2 + 1) as *const ());
         while read_volatile(&raw const fromhost) == 0 { }
         write_volatile(&raw mut fromhost, 0);
     }
+    loop {}
 }
 
 pub fn write(fd: u64, s: &str) {
@@ -68,6 +69,11 @@ pub fn write(fd: u64, s: &str) {
     let len = s.len();
     let s = s as *const str;
     htif_syscall(64, fd, s as *const () as u64, len.try_into().unwrap());
+}
+
+pub fn exit(code: u64) -> ! {
+    htif_syscall(93, code, 0, 0);
+    loop {}
 }
 
 #[cfg(test)]

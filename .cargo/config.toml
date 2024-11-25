@@ -19,6 +19,17 @@ rustflags = [
   "-C", "link-arg=-Tlink.x",
 ]
 
+[target.riscv64gc-unknown-none-elf]
+# runner = "spike -d"
+runner = "spike"
+
+# linker = "riscv64-unknown-elf-ld"
+linker = "riscv64-elf-ld"
+rustflags = [
+  "-C", "link-arg=-Tmemory.x",
+  "-C", "link-arg=-Tlink.x",
+]
+
 [build]
 # target = "riscv32imac-unknown-none-elf"
-target = "riscv64imac-unknown-none-elf"
+target = "riscv64gc-unknown-none-elf"
