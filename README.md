@@ -4,8 +4,7 @@ Rust example that compiles to baremetal riscv. Supports HTIF to communicate with
 ## Quick start
 Edit the configuration at `.cargo/config.toml`.
 ```
-rustup target add riscv32imac-unknown-none-elf
-rustup target add riscv64imac-unknown-none-elf
+rustup target add riscv64gc-unknown-none-elf
 cargo build
 ```
 
@@ -14,10 +13,18 @@ To run a specific benchmark (Requires [Spike](https://github.com/riscv-software-
 cargo run --bin bin-name
 ```
 
+You can also run cargo with specific configuration with the `--config` flag. Example:
+```
+rustup target add riscv32imac-unknown-none-elf
+cargo --config 'build.target="riscv32imac-unknown-none-elf"' \
+    --config 'target.riscv32imac-unknown-none-elf.linker="riscv32-unknown-elf-ld"' \
+    r --bin median --release
+```
 ## TODO
 - [ ] sync syscall (https://stackoverflow.com/questions/72369202/are-mutable-static-primitives-actually-unsafe-if-single-threaded)
+    - spin crate provides spinlock, or just write our own
 - [x] make work in release mode
-- [ ] exit properly
+- [x] exit properly
 - [x] core::write
 - [ ] trap handling
 - [x] panic handling
@@ -30,7 +37,6 @@ cargo run --bin bin-name
 - HAL / board config? IDK how hardware works
 - What should be the init assembly and linker scripts? Copy from other projects? minimal? HW dependent?
     - Not sure what zeroing registers and other magic does
-- Use #[entry]
 
 ### Benchmarks
 - Port benchmarks from riscv tests
