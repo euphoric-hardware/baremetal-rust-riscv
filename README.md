@@ -50,3 +50,7 @@ HTIF implementations:
 Rust:
 - Baremetal rust: https://docs.rust-embedded.org/book/intro/index.html
 - Riscv rust: https://github.com/rust-embedded/riscv
+
+# Lisense
+Some of the C code is from https://github.com/riscv-software-src/riscv-tests/ and the license can be found in src/bin/c_ver/LICENSE
+TODO
