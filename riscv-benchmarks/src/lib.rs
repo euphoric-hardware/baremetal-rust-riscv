@@ -6,7 +6,7 @@ use htif::HostFile;
 use riscv::register;
 
 const BENCHMARK_DATA_COUNT: usize = 2;
-const BENCHMARK_CSR: [(fn()->usize, &str); BENCHMARK_DATA_COUNT] = [
+const BENCHMARK_CSR: [(fn() -> usize, &str); BENCHMARK_DATA_COUNT] = [
     (register::mcycle::read, "mcycle"),
     (register::minstret::read, "minstret"),
 ];
@@ -43,7 +43,12 @@ pub fn verify_and_end_benchmark<T: core::fmt::Display + core::cmp::PartialEq>(
     print_benchmark_data(benchmark_data);
     for i in 0..result.len() {
         if result[i] != expected[i] {
-            panic!("BAD {} {} {}", i, result[i], expected[i]);
+            panic!(
+                "\tVerification failed; array different at index {}\n\
+                \texpected: {}\n\
+                \tactual: {}\n",
+                i, result[i], expected[i]
+            );
         }
     }
     htif::exit(0);
