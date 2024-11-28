@@ -4,3 +4,7 @@ members = [
     "htif",
     "riscv-benchmarks",
 ]
+
+[profile.release]
+strip = "debuginfo"
+lto = true

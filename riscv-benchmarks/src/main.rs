@@ -1,6 +1,7 @@
 #![no_main]
 #![no_std]
 
+use riscv::register;
 use riscv_rt::entry;
 use htif::{exit, HostFile};
 use core::fmt::Write;
@@ -12,6 +13,7 @@ fn main() -> ! {
     let mut z = x + y;
     z = z + z + 3;
 
+    writeln!(HostFile::stdout(), "{}", register::mcycle::read()).unwrap();
     writeln!(HostFile::stdout(), "{}", z).unwrap();
 
 
