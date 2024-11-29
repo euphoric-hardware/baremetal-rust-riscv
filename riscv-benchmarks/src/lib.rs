@@ -21,7 +21,7 @@ pub fn start_benchmark() -> BenchmarkData {
     ret
 }
 
-fn print_benchmark_data(mut data: BenchmarkData) {
+pub fn print_benchmark_data(mut data: BenchmarkData) {
     for (i, csr_op) in BENCHMARK_CSR.iter().enumerate() {
         data[i] = csr_op.0() - data[i];
     }
@@ -35,21 +35,31 @@ pub fn end_benchmark(benchmark_data: BenchmarkData) -> ! {
     htif::exit(0);
 }
 
-pub fn verify_and_end_benchmark<T: core::fmt::Display + core::cmp::PartialEq>(
+// Trait alias
+// trait Data = core::fmt::Display + core::cmp::PartialEq;
+
+pub fn verify_data<T: core::fmt::Display + core::cmp::PartialEq>(
     result: &[T],
     expected: &[T],
-    benchmark_data: BenchmarkData,
-) -> ! {
-    print_benchmark_data(benchmark_data);
+) {
     for i in 0..result.len() {
         if result[i] != expected[i] {
             panic!(
                 "\tVerification failed; array different at index {}\n\
                 \texpected: {}\n\
                 \tactual: {}\n",
-                i, result[i], expected[i]
+                i, expected[i], result[i]
             );
         }
     }
+}
+
+pub fn verify_and_end_benchmark<T: core::fmt::Display + core::cmp::PartialEq>(
+    result: &[T],
+    expected: &[T],
+    benchmark_data: BenchmarkData,
+) -> ! {
+    print_benchmark_data(benchmark_data);
+    verify_data(result, expected);
     htif::exit(0);
 }
