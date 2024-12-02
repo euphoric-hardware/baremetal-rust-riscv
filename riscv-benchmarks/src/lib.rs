@@ -40,10 +40,7 @@ pub fn end_benchmark(benchmark_data: BenchmarkData) -> ! {
 // Trait alias
 // trait Data = core::fmt::Display + core::cmp::PartialEq;
 
-pub fn verify_data<T: core::fmt::Display + core::cmp::PartialEq>(
-    result: &[T],
-    expected: &[T],
-) {
+pub fn verify_data<T: core::fmt::Display + core::cmp::PartialEq>(result: &[T], expected: &[T]) {
     for i in 0..result.len() {
         if result[i] != expected[i] {
             panic!(
@@ -54,6 +51,14 @@ pub fn verify_data<T: core::fmt::Display + core::cmp::PartialEq>(
             );
         }
     }
+    assert!(
+        result.len() == expected.len(),
+        "\tVerification failed; array lenght differs\n\
+                \texpected len: {}\n\
+                \tactual len: {}\n",
+        expected.len(),
+        result.len()
+    );
 }
 
 pub fn verify_and_end_benchmark<T: core::fmt::Display + core::cmp::PartialEq>(

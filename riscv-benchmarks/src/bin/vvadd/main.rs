@@ -28,18 +28,18 @@ fn vvadd(n: usize, input1: &[i64], input2: &[i64], result: &mut [i64]) {
 }
 
 fn vvadd_unrolled(n: usize, input1: &[i64], input2: &[i64], result: &mut [i64]) {
-    for i in (0..DATA_SIZE-8).step_by(8) {
-        result[i] = INPUT_DATA1[i] + INPUT_DATA2[i];
-        result[i+1] = INPUT_DATA1[i+1] + INPUT_DATA2[i+1];
-        result[i+2] = INPUT_DATA1[i+2] + INPUT_DATA2[i+2];
-        result[i+3] = INPUT_DATA1[i+3] + INPUT_DATA2[i+3];
-        result[i+4] = INPUT_DATA1[i+4] + INPUT_DATA2[i+4];
-        result[i+5] = INPUT_DATA1[i+5] + INPUT_DATA2[i+5];
-        result[i+6] = INPUT_DATA1[i+6] + INPUT_DATA2[i+6];
-        result[i+7] = INPUT_DATA1[i+7] + INPUT_DATA2[i+7];
+    for i in (0..DATA_SIZE-7).step_by(8) {
+        result[i] = input1[i] + input2[i];
+        result[i+1] = input1[i+1] + input2[i+1];
+        result[i+2] = input1[i+2] + input2[i+2];
+        result[i+3] = input1[i+3] + input2[i+3];
+        result[i+4] = input1[i+4] + input2[i+4];
+        result[i+5] = input1[i+5] + input2[i+5];
+        result[i+6] = input1[i+6] + input2[i+6];
+        result[i+7] = input1[i+7] + input2[i+7];
     }
     for i in (DATA_SIZE/8*8)..(DATA_SIZE) {
-        result[i] = INPUT_DATA1[i] + INPUT_DATA2[i];
+        result[i] = input1[i] + input2[i];
     }
     return
 }

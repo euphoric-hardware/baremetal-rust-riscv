@@ -41,6 +41,17 @@ cargo --config 'build.target="riscv32imac-unknown-none-elf"' \
 ### Benchmarks
 - Port benchmarks from riscv tests
 - Cycles should be similar?
+- Not sure if cycles are accurate, might need more testing / investigating.
+- Figured out why mcycle is worst: no vector instructions
+
+- Tower: The the original riscv-tests uses linked list. Linked list normally sucks, but maybe in embedded programming it is good. Still need to decide how to port
+- memcpy: clone (memcpy) uses 5x more mcycle, maybe look at rust documentation. C version unrolls the loop
+- sort: do we want to implement sort and compare to C?
+
+#### Conclusion
+Hard to recreate some of the tests without using unsafe and pointers, but then we would just be writing C. Maybe we should still do that.
+
+Borrow checker is pretty good. Safety gaurantees are nice too. For example, global static is unsafe by default, so the programmer knows that they need sync or redesign (for porting riscv-tests, I make the caller track data for now instead of global statics).
 
 ### Results
 | Benchmark                      | Rust mcycle | C mcycle | Godbolt                         |
