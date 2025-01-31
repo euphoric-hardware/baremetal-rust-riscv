@@ -44,12 +44,14 @@ cargo --config 'build.target="riscv32imac-unknown-none-elf"' \
 
 ### Results
 | Benchmark                      | Rust mcycle | C mcycle | Godbolt                         |
+|--------------------------------|-------------|----------|---------------------------------|
 | median                         | 6449        | 4654     | https://godbolt.org/z/8rdThb57a |
 | vvadd                          | 4835        | 2411     | https://godbolt.org/z/e1jcPajGW |
 | sort                           | 215018      | x        |                                 |
 | qsort                          | 308650      | 123208   |                                 |
 | multiply                       | 7590        | 26811    | https://godbolt.org/z/6fjjqP6rq |
 | multiply (with --unroll-loops) |             | 20986    | https://godbolt.org/z/6fjjqP6rq |
+
 
 ## Resources
 HTIF implementations:
