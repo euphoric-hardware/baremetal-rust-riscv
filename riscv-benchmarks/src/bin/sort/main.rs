@@ -1,9 +1,7 @@
 #![no_main]
 #![no_std]
 
-mod data;
-
-use data::*;
+use sort_data::*;
 use riscv_benchmarks::*;
 use riscv_rt::entry;
 

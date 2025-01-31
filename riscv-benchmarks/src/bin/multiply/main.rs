@@ -20,7 +20,8 @@ fn main() -> ! {
 fn multiply(mut x: i64, mut y: i64) -> i64 {
     let mut result = 0;
 
-    while x != 0 {
+    // while x != 0 {
+    for _i in 0..32 {
         if (x & 0x1) == 1 {
             result += y;
         }

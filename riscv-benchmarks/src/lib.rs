@@ -5,6 +5,8 @@ use core::fmt::Write;
 use htif::HostFile;
 use riscv::register;
 
+pub mod sort_data;
+
 const BENCHMARK_DATA_COUNT: usize = 2;
 const BENCHMARK_CSR: [(fn() -> usize, &str); BENCHMARK_DATA_COUNT] = [
     (register::mcycle::read, "mcycle"),
