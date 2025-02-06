@@ -13,8 +13,8 @@ use core::cmp::Ordering;
 use core::mem::swap;
 use core::fmt::Write;
 
-const INSERTION_THRESHOLD: usize = 16;
-const NSTACK: usize = 64;
+const INSERTION_THRESHOLD: usize = 10;
+const NSTACK: usize = 32;
 
 type Type = i64; // Change this to desired type
 
@@ -54,6 +54,7 @@ pub fn sort(arr: &mut [Type]) {
     let mut stack = [(0, 0); NSTACK];
     let mut stackp = 0;
 
+    // right inclusive
     let (mut left, mut right): (usize, usize) = (0, len - 1);
 
     loop {
@@ -71,8 +72,8 @@ pub fn sort(arr: &mut [Type]) {
         } else {
             // Choose median of left, center, and right elements as partitioning element
             // TODO: fix me (l+r)/2-1
-            // let mid = (left+right) / 2-1;
-            let mid = left + (right - left) / 2;
+            let mid = (left+right) / 2-1;
+            // let mid = left + (right - left) / 2;
             arr.swap(mid, left);
             swap_if_greater(arr, left, right);
             swap_if_greater(arr, left, right - 1);
@@ -85,13 +86,13 @@ pub fn sort(arr: &mut [Type]) {
 
             // Partitioning loop
             loop {
-                while i <= right && arr[i] < pivot {
+                while arr[i] < pivot {
                     i += 1;
                 }
-                while j > left && arr[j] > pivot {
+                while arr[j] > pivot {
                     j -= 1;
                 }
-                if i >= j {
+                if j < i {
                     break;
                 }
                 arr.swap(i, j);
