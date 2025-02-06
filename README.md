@@ -30,11 +30,12 @@ cargo --config 'build.target="riscv32imac-unknown-none-elf"' \
 - [x] panic handling
 
 ## Ideas
+- Unsafe rust
 - Share rust code/interface with fesvr for syscalls
 - Would be cool to debug with gdb using openocd: https://docs.rust-embedded.org/book/start/hardware.html
 - Better cargo commands (cargo run with spike -d, build options, specify targets...)
 - Improve organization, HTIF as its own package?
-- HAL / board config? IDK how hardware works
+- HAL / board config?
 - What should be the init assembly and linker scripts? Copy from other projects? minimal? HW dependent?
     - Not sure what zeroing registers and other magic does
 
@@ -62,6 +63,7 @@ Borrow checker is pretty good. Safety gaurantees are nice too. For example, glob
 | qsort                          | 308650      | 123208   |                                 |
 | multiply                       | 7590        | 26811    | https://godbolt.org/z/6fjjqP6rq |
 | multiply (with --unroll-loops) |             | 20986    | https://godbolt.org/z/6fjjqP6rq |
+| memcpy                         | 9540        | 5515     | https://godbolt.org/z/Wz3T6oP96 |
 
 
 ## Resources
