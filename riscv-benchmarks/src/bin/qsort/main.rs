@@ -31,6 +31,20 @@ fn insertion_sort(arr: &mut [Type]) {
     }
 }
 
+fn insertion_sort_unsafe(arr: &mut [Type]) {
+    unsafe {
+        for i in 1..arr.len() {
+            let value = *arr.get_unchecked(i);
+            let mut j = i;
+            while j > 0 && *arr.get_unchecked(j - 1) > value {
+                *arr.get_unchecked_mut(j) = *arr.get_unchecked(j - 1);
+                j -= 1;
+            }
+            *arr.get_unchecked_mut(j) = value;
+        }
+    }
+}
+
 fn selection_sort(arr: &mut [Type]) {
     let len = arr.len();
     for i in 0..len - 1 {

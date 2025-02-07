@@ -58,7 +58,7 @@ Borrow checker is pretty good. Safety gaurantees are nice too. For example, glob
 | median                           | 6449        | 4654     | https://godbolt.org/z/8rdThb57a |
 | sort                             | 215018      | x        |                                 |
 | qsort                            | 231015      | 123208   |                                 |
-| qsort (with no bounds checking)  | 184832      |          |                                 |
+| qsort (with no bounds checking)  | 184037      |          |                                 |
 | rsort                            | TODO        | 171156   |                                 |
 | towers                           | TODO        |          |                                 |
 | vvadd                            | 4835        | 2411     | https://godbolt.org/z/e1jcPajGW |
