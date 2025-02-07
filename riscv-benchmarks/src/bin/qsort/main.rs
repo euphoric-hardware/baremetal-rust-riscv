@@ -4,14 +4,9 @@
 #![no_main]
 #![no_std]
 
-use htif::HostFile;
 use sort_data::*;
 use riscv_benchmarks::*;
 use riscv_rt::entry;
-
-use core::cmp::Ordering;
-use core::mem::swap;
-use core::fmt::Write;
 
 const INSERTION_THRESHOLD: usize = 10;
 const NSTACK: usize = 32;
@@ -48,36 +43,36 @@ fn selection_sort(arr: &mut [Type]) {
 // Quicksort function
 pub fn sort(arr: &mut [Type]) {
     let len = arr.len();
-    if len <= 1 {
-        return;
-    }
     let mut stack = [(0, 0); NSTACK];
     let mut stackp = 0;
 
-    // right inclusive
-    let (mut left, mut right): (usize, usize) = (0, len - 1);
+    let (mut left, mut right): (usize, usize) = (1, len);
 
     loop {
-        // TODO: inspect and verify
+        // Used to verify that algorithm matches C implementation
         // writeln!(HostFile::stdout(), "{} {}", left, right);
         // Insertion sort when subarray is small enough
         if right as i64 - (left as i64) < INSERTION_THRESHOLD as i64 {
-            insertion_sort(&mut arr[left..=right]);
+            if right >= left-1 {
+                insertion_sort(&mut arr[left-1..right]);
+            }
             if stackp == 0 {
                 break;
             }
+            // pop the stack
             stackp -= 1;
             right = stack[stackp].1;
             left = stack[stackp].0;
         } else {
-            // Choose median of left, center, and right elements as partitioning element
-            // TODO: fix me (l+r)/2-1
+            // Choose median of left, center, and right elements
+            // as partitioning element. Also rearrange so that
+            // arr[l-1] <= arr[l] <= arr[ir-1].
+
             let mid = (left+right) / 2-1;
-            // let mid = left + (right - left) / 2;
             arr.swap(mid, left);
-            swap_if_greater(arr, left, right);
-            swap_if_greater(arr, left, right - 1);
-            swap_if_greater(arr, right - 1, right);
+            swap_if_greater(arr, left - 1, right-1);
+            swap_if_greater(arr, left, right-1);
+            swap_if_greater(arr, left - 1, left);
 
             // Partitioning element
             let pivot = arr[left];
@@ -86,25 +81,34 @@ pub fn sort(arr: &mut [Type]) {
 
             // Partitioning loop
             loop {
-                while arr[i] < pivot {
+                // Find element > pivot
+                loop {
                     i += 1;
+                    // unsafe {
+                    //     if arr.get_unchecked(i-1) >= &pivot { break; }
+                    // }
+                    if arr[i-1] >= pivot { break; }
                 }
-                while arr[j] > pivot {
+                // Find element < pivot
+                loop {
                     j -= 1;
+                    // unsafe {
+                    //     if arr.get_unchecked(j-1) <= &pivot { break; }
+                    // }
+                    if arr[j-1] <= pivot { break; }
                 }
                 if j < i {
                     break;
                 }
-                arr.swap(i, j);
-                // i += 1;
-                // j -= 1;
+                arr.swap(i-1, j-1);
             }
 
             // Insert partitioning element
-            arr.swap(left, j);
-            
+            arr[left] = arr[j-1];
+            arr[j-1] = pivot;
+
             // Push pointers to larger subarray on stack, process smaller subarray immediately
-            if right - i >= j - left {
+            if right as i32 - i as i32 + 1 >= j as i32 - left as i32 {
                 stack[stackp] = (i, right);
                 stackp += 1;
                 right = j - 1;
