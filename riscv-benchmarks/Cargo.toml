@@ -11,3 +11,5 @@ riscv = "0.12.1"
 riscv-rt = "0.13.0"
 htif = { path = "../htif" }
 radsort = "0.1.1"
+modulo-n-tools = "0.2.0"
+md-5 = { version = "0.10.6", default-features = false }

@@ -67,6 +67,7 @@ Borrow checker is pretty good. Safety gaurantees are nice too. For example, glob
 | multiply (with --unroll-loops)   |             | 20986    | https://godbolt.org/z/6fjjqP6rq |
 
 no_std rsort crates: radsort, rdx
+aha-mont64 crates: modulo-n-tools
 
 ## Resources
 HTIF implementations:
