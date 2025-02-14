@@ -10,3 +10,4 @@ cc = "1.1.31"
 riscv = "0.12.1"
 riscv-rt = "0.13.0"
 htif = { path = "../htif" }
+radsort = "0.1.1"

@@ -59,13 +59,14 @@ Borrow checker is pretty good. Safety gaurantees are nice too. For example, glob
 | sort                             | 215018      | x        |                                 |
 | qsort                            | 231015      | 123208   |                                 |
 | qsort (with no bounds checking)  | 184037      |          |                                 |
-| rsort                            | TODO        | 171156   |                                 |
+| rsort (radsort crate)            | 289750      | 171156   |                                 |
 | towers                           | TODO        |          |                                 |
 | vvadd                            | 4835        | 2411     | https://godbolt.org/z/e1jcPajGW |
 | memcpy                           | 9540        | 5515     | https://godbolt.org/z/Wz3T6oP96 |
 | multiply                         | 7590        | 26811    | https://godbolt.org/z/6fjjqP6rq |
 | multiply (with --unroll-loops)   |             | 20986    | https://godbolt.org/z/6fjjqP6rq |
 
+no_std rsort crates: radsort, rdx
 
 ## Resources
 HTIF implementations:
