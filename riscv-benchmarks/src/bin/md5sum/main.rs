@@ -20,7 +20,10 @@ fn main() -> ! {
         let mut hasher = Md5::new();
         hasher.update(data);
         let hash = hasher.finalize();
-        // writeln!(htif::HostFile::stdout(), "{:?}", hash);
+        // for h in hash {
+        //     write!(htif::HostFile::stdout(), "{:02x?}", h).unwrap();
+        // }
+        // writeln!(htif::HostFile::stdout(), "").unwrap();
     }
     verify_and_end_benchmark(&[1], &[1], benchmark_data);
 }
