@@ -13,3 +13,4 @@ htif = { path = "../htif" }
 radsort = "0.1.1"
 modulo-n-tools = "0.2.0"
 md-5 = { version = "0.10.6", default-features = false }
+num = { version = "0.4.3", default-features = false, features = ["alloc"] }
