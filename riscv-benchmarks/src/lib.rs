@@ -77,13 +77,13 @@ pub fn end_benchmark(benchmark_data: BenchmarkData) -> ! {
 // Trait alias
 // trait Data = core::fmt::Display + core::cmp::PartialEq;
 
-pub fn verify_data<T: core::fmt::Display + core::cmp::PartialEq>(result: &[T], expected: &[T]) {
+pub fn verify_data<T: core::fmt::Debug + core::cmp::PartialEq>(result: &[T], expected: &[T]) {
     for i in 0..result.len() {
         if result[i] != expected[i] {
             panic!(
                 "\tVerification failed; array different at index {}\n\
-                \texpected: {}\n\
-                \tactual: {}\n",
+                \texpected: {:?}\n\
+                \tactual: {:?}\n",
                 i, expected[i], result[i]
             );
         }
@@ -98,7 +98,7 @@ pub fn verify_data<T: core::fmt::Display + core::cmp::PartialEq>(result: &[T], e
     );
 }
 
-pub fn verify_and_end_benchmark<T: core::fmt::Display + core::cmp::PartialEq>(
+pub fn verify_and_end_benchmark<T: core::fmt::Debug + core::cmp::PartialEq>(
     result: &[T],
     expected: &[T],
     benchmark_data: BenchmarkData,
