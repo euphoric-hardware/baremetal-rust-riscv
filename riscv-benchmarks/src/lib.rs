@@ -54,7 +54,7 @@ pub fn verify_data<T: core::fmt::Display + core::cmp::PartialEq>(result: &[T], e
     }
     assert!(
         result.len() == expected.len(),
-        "\tVerification failed; array lenght differs\n\
+        "\tVerification failed; array length differs\n\
                 \texpected len: {}\n\
                 \tactual len: {}\n",
         expected.len(),
