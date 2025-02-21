@@ -20,11 +20,11 @@ pub struct HostFile {
 }
 
 impl HostFile {
-    pub fn from_fd(fd: u64) -> HostFile {
+    pub const fn from_fd(fd: u64) -> HostFile {
         HostFile{ fd }
     }
 
-    pub fn stdout() -> HostFile {
+    pub const fn stdout() -> HostFile {
         HostFile::from_fd(1)
     }
 }

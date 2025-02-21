@@ -1,4 +1,4 @@
-[target.'cfg(all())']
+[target.'cfg(target_os = "none")']
 rustflags = [
   "-C", "link-arg=-Tmemory.x",
   "-C", "link-arg=-Tlink.x",

@@ -1,17 +1,32 @@
 #![no_main]
 #![no_std]
 
-use core::fmt::Write;
-use htif::HostFile;
+
+#[cfg(feature = "std")]
+extern crate std;
+
+use core::{fmt::Write, panic::PanicInfo};
+use htif::{panic_htif_print, HostFile};
 use riscv::register;
 
 pub mod sort_data;
 pub mod allocator;
 
+#[cfg(any(target_arch = "riscv32", target_arch = "riscv64"))]
 const BENCHMARK_DATA_COUNT: usize = 2;
+
+#[cfg(any(target_arch = "x86_64"))]
+const BENCHMARK_DATA_COUNT: usize = 1;
+
+#[cfg(any(target_arch = "riscv32", target_arch = "riscv64"))]
 const BENCHMARK_CSR: [(fn() -> usize, &str); BENCHMARK_DATA_COUNT] = [
     (register::mcycle::read, "mcycle"),
     (register::minstret::read, "minstret"),
+];
+
+#[cfg(any(target_arch = "x86_64"))]
+const BENCHMARK_CSR: [(fn() -> usize, &str); BENCHMARK_DATA_COUNT] = [
+    (|| unsafe { core::arch::x86_64::_rdtsc() } as usize, "rdtsc")
 ];
 
 pub type BenchmarkData = [usize; BENCHMARK_DATA_COUNT];
@@ -19,11 +34,12 @@ pub type BenchmarkData = [usize; BENCHMARK_DATA_COUNT];
 pub fn start_benchmark() -> BenchmarkData {
     let mut ret = [0; BENCHMARK_DATA_COUNT];
     for (i, csr_op) in BENCHMARK_CSR.iter().enumerate() {
-        ret[i] = csr_op.0();
+        ret[i] = unsafe { csr_op.0() }
     }
     ret
 }
 
+#[cfg(not(feature = "std"))]
 pub fn print_benchmark_data(mut data: BenchmarkData) {
     for (i, csr_op) in BENCHMARK_CSR.iter().enumerate() {
         data[i] = csr_op.0() - data[i];
@@ -33,9 +49,29 @@ pub fn print_benchmark_data(mut data: BenchmarkData) {
     }
 }
 
+#[cfg(feature = "std")]
+pub fn print_benchmark_data(mut data: BenchmarkData) {
+    for (i, csr_op) in BENCHMARK_CSR.iter().enumerate() {
+        data[i] = csr_op.0() - data[i];
+    }
+    for (i, csr_op) in BENCHMARK_CSR.iter().enumerate() {
+        std::println!("{}: {}", csr_op.1, data[i]);
+    }
+}
+
+#[cfg(not(feature = "std"))]
+fn exit() -> ! {
+    htif::exit(0);
+}
+
+#[cfg(feature = "std")]
+fn exit() -> ! {
+    std::process::exit(0);
+}
+
 pub fn end_benchmark(benchmark_data: BenchmarkData) -> ! {
     print_benchmark_data(benchmark_data);
-    htif::exit(0);
+    exit();
 }
 
 // Trait alias
@@ -69,5 +105,11 @@ pub fn verify_and_end_benchmark<T: core::fmt::Display + core::cmp::PartialEq>(
 ) -> ! {
     print_benchmark_data(benchmark_data);
     verify_data(result, expected);
-    htif::exit(0);
+    exit();
+}
+
+#[cfg(not(feature = "std"))]
+#[panic_handler]
+pub fn panic(_info: &PanicInfo) -> ! {
+    panic_htif_print::panic(_info);
 }
