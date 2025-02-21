@@ -62,14 +62,10 @@ impl Montgomery {
         // Compute m = (t mod R) * nprime mod R.
         // Since R = 2^64, t mod R is the lower 64 bits of t.
         let m = ((t as u64).wrapping_mul(self.nprime)) as u64;
-        // let m = ((t as u64)*(self.nprime)) as u64;
         // Compute u = (t + m * n) / R.
-        let u = (t + (m as u128 * self.n as u128)) >> 64;
-        // Ensure the result is reduced modulo n.
-        let mut res = u as u64;
-        // writeln!(htif::HostFile::stdout(), "=={} {}", u, res).unwrap();
-        if res >= self.n {
-            // writeln!(htif::HostFile::stdout(), "============={} {}", u, res).unwrap();
+        let u = t.wrapping_add(m as u128 * self.n as u128);
+        let mut res = (u >> 64) as u64;
+        if u < t { // check for overflow
             res = res.wrapping_sub(self.n);
         }
         res
@@ -89,10 +85,9 @@ fn multiply(x: u64, y: u64, m: u64) -> u64 {
 fn main() -> ! {
     let benchmark_data = start_benchmark();
     let in_m = 0xfae849273928f89f;
-    let mut in_a = 0x0549372187237fef;
+    let in_a = 0x0549372187237fef;
     let in_b:u64 = 0x14736defb9330573;
     for _ in 0..423 {
-        // in_a += 1;
 
         let m = Montgomery::new(in_m);
         let a = m.to_montgomery(in_a);
@@ -108,6 +103,7 @@ fn main() -> ! {
         let r2 = multiply(r2, r2, in_m);
         // writeln!(htif::HostFile::stdout(), "{}, {}", r2, r).unwrap();
         verify_data(&[r], &[r2]);
+        // in_a += 1;
     }
     end_benchmark(benchmark_data);
 }
