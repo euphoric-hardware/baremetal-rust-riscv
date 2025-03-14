@@ -1,9 +1,13 @@
 #![no_main]
 #![no_std]
 
+#![feature(test)]
 
 #[cfg(feature = "std")]
 extern crate std;
+
+mod foo;
+
 
 use core::{fmt::Write, panic::PanicInfo};
 use htif::{panic_htif_print, HostFile};

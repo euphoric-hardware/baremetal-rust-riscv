@@ -28,5 +28,6 @@ runner = "spike"
 linker = "riscv64-elf-ld"
 
 [build]
-# target = "riscv32imac-unknown-none-elf"
-target = "riscv64gc-unknown-none-elf"
+target = "riscv32imac-unknown-none-elf"
+# target = "riscv64gc-unknown-none-elf"
+# target = "x86_64-unknown-linux-gnu"
