@@ -7,7 +7,7 @@ use core::cell::UnsafeCell;
 use core::ptr::null_mut;
 use core::sync::atomic::{AtomicUsize, Ordering::Relaxed};
 
-const ARENA_SIZE: usize = 128 * 1024;
+const ARENA_SIZE: usize = 12800 * 1024;
 const MAX_SUPPORTED_ALIGN: usize = 4096;
 #[repr(C, align(4096))] // 4096 == MAX_SUPPORTED_ALIGN
 struct SimpleAllocator {

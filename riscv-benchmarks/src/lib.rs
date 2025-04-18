@@ -60,12 +60,12 @@ pub fn print_benchmark_data(mut data: BenchmarkData) {
 }
 
 #[cfg(not(feature = "std"))]
-fn exit() -> ! {
+pub fn exit() -> ! {
     htif::exit(0);
 }
 
 #[cfg(feature = "std")]
-fn exit() -> ! {
+pub fn exit() -> ! {
     std::process::exit(0);
 }
 
