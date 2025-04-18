@@ -20,7 +20,7 @@ impl Bencher {
         F: FnMut() -> T,
     {
         let benchmark_data = start_benchmark();
-        for _ in 0..1 {
+        for _ in 0..100 {
             black_box(inner());
         }
         print_benchmark_data(benchmark_data);

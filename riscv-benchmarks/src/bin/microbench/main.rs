@@ -2,7 +2,7 @@
 #![no_std]
 
 use bencher::Bencher;
-use riscv_benchmarks::exit;
+use riscv_benchmarks::{exit, init_heap};
 use riscv_rt::entry;
 
 mod bencher;
@@ -13,6 +13,7 @@ const SCALE_FACTOR: usize = 78;
 
 #[entry]
 fn main() -> ! {
+    init_heap();
 
     let mut b = Bencher{};
 

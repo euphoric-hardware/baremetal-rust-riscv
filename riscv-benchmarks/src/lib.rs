@@ -10,7 +10,6 @@ use htif::{panic_htif_print, HostFile};
 use riscv::register;
 
 pub mod sort_data;
-pub mod allocator;
 
 #[cfg(any(target_arch = "riscv32", target_arch = "riscv64"))]
 const BENCHMARK_DATA_COUNT: usize = 2;
@@ -112,4 +111,24 @@ pub fn verify_and_end_benchmark<T: core::fmt::Debug + core::cmp::PartialEq>(
 #[panic_handler]
 pub fn panic(_info: &PanicInfo) -> ! {
     panic_htif_print::panic(_info);
+}
+
+// Allocator
+// Uses critical-section-single-hart provided by the riscv crate.
+//
+// TODO: multi hart
+
+use embedded_alloc::LlffHeap as Heap;
+
+#[global_allocator]
+static HEAP: Heap = Heap::empty();
+
+pub fn init_heap() {
+    // Initialize the allocator BEFORE you use it
+    {
+        use core::mem::MaybeUninit;
+        const HEAP_SIZE: usize = 12800*1024;
+        static mut HEAP_MEM: [MaybeUninit<u8>; HEAP_SIZE] = [MaybeUninit::uninit(); HEAP_SIZE];
+        unsafe { HEAP.init(HEAP_MEM.as_ptr() as usize, HEAP_SIZE) }
+    }
 }
