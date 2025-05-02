@@ -6,8 +6,8 @@ use riscv_rt::entry;
 use md5::{Md5, Digest};
 use core::fmt::Write;
 
-const MSG_SIZE: usize = 1000;
-const SCALE_FACTOR: usize = 51;
+const MSG_SIZE: usize = 10;
+const SCALE_FACTOR: usize = 1;
 
 #[entry]
 fn main() -> ! {

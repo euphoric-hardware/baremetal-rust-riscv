@@ -1,8 +1,8 @@
 /* See https://docs.rs/riscv-rt/latest/riscv_rt/ */
 MEMORY
 {
-  FLASH : ORIGIN = 0x80000000, LENGTH = 16M
-  RAM : ORIGIN = 0x90000000, LENGTH = 64M
+  FLASH : ORIGIN = 0x80000000, LENGTH = 64K
+  RAM : ORIGIN = 0x82000000, LENGTH = 64K
 }
 
 REGION_ALIAS("REGION_TEXT", FLASH);
