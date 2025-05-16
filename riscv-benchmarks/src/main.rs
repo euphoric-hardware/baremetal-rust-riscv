@@ -5,6 +5,8 @@ use riscv::register;
 use riscv_rt::entry;
 use htif::{exit, HostFile};
 use core::fmt::Write;
+#[allow(unused_imports)]
+use riscv_benchmarks::*;
 
 #[entry]
 fn main() -> ! {
@@ -12,6 +14,7 @@ fn main() -> ! {
     let y = 5;
     let mut z = x + y;
     z = z + z + 3;
+    writeln!(HostFile::stdout(), "Hello world!").unwrap();
 
     writeln!(HostFile::stdout(), "{}", register::mcycle::read()).unwrap();
     writeln!(HostFile::stdout(), "{}", z).unwrap();
