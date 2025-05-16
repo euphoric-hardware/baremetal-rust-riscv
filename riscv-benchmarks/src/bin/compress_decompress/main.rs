@@ -7,6 +7,7 @@ use md5::{Md5, Digest};
 use md5::digest::generic_array::{typenum, GenericArray};
 use core::fmt::Write;
 use core::hint::black_box;
+use core::iter;
 
 const MSG_SIZE: usize = 10;
 const SCALE_FACTOR: usize = 10;
