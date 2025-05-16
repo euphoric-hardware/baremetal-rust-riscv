@@ -1,7 +1,7 @@
 /* See https://docs.rs/riscv-rt/latest/riscv_rt/ */
 MEMORY
 {
-  FLASH : ORIGIN = 0x80000000, LENGTH = 16M
+  FLASH : ORIGIN = 0x80000000, LENGTH = 32M
   /* RAM : ORIGIN = 0x80000000, LENGTH = 8K */
 }
 

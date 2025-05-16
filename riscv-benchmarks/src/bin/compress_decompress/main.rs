@@ -3,35 +3,30 @@
 
 use riscv_benchmarks::*;
 use riscv_rt::entry;
-use md5::{Md5, Digest};
-use md5::digest::generic_array::{typenum, GenericArray};
+
+use miniz_oxide::deflate::compress_to_vec;
+use miniz_oxide::inflate::decompress_to_vec;
 use core::fmt::Write;
 use core::hint::black_box;
 use core::iter;
 
-const MSG_SIZE: usize = 10;
+const DATA_SIZE: usize = 1000; // total size: 5345280;
 const SCALE_FACTOR: usize = 10;
 
-fn compute_hash(data: [u8; MSG_SIZE]) -> GenericArray<u8, typenum::U16> {
-    let mut hasher = Md5::new();
-    hasher.update(data);
-    hasher.finalize()
-}
+const DATA: &[u8] = include_bytes!("xml");
 
 #[entry]
 fn main() -> ! {
-    let mut data: [u8; MSG_SIZE] = [0; MSG_SIZE];
-    for (i, x) in data.iter_mut().enumerate() {
-        *x = i as u8;
-    }
+    init_heap();
+    let data = &DATA[..DATA_SIZE];
     for _ in 0..SCALE_FACTOR {
         let benchmark_data = start_benchmark();
-        black_box(compute_hash(black_box(data)));
+        let compressed_data = black_box(compress_to_vec(black_box(data), 7));
+        let decompressed_data = black_box(decompress_to_vec(black_box(compressed_data.as_slice()))).unwrap();
         print_benchmark_data(benchmark_data);
-        // for h in hash {
-        //     write!(htif::HostFile::stdout(), "{:02x?}", h).unwrap();
-        // }
-        // writeln!(htif::HostFile::stdout(), "").unwrap();
+        verify_data(decompressed_data.as_slice(), data);
+
+        writeln!(htif::HostFile::stdout(), "Compressed size: {}", compressed_data.len()).unwrap();
     }
     // verify_and_end_benchmark(&[1], &[1], benchmark_data);
     exit();

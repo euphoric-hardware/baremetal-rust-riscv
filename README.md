@@ -20,6 +20,11 @@ cargo --config 'build.target="riscv32imac-unknown-none-elf"' \
     --config 'target.riscv32imac-unknown-none-elf.linker="riscv32-unknown-elf-ld"' \
     r --bin median --release
 ```
+
+To change memory size:
+- Change `memory.x`
+- Change HEAP_SIZE in init_heap in `riscv-benchmarks/lib.rs`
+
 ## TODO
 - [ ] sync syscall (https://stackoverflow.com/questions/72369202/are-mutable-static-primitives-actually-unsafe-if-single-threaded)
     - spin crate provides spinlock, or just write our own

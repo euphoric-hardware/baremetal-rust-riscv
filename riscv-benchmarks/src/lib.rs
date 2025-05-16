@@ -129,7 +129,7 @@ pub fn init_heap() {
     #[cfg(not(feature = "std"))]
     {
         use core::mem::MaybeUninit;
-        const HEAP_SIZE: usize = 64*1024;
+        const HEAP_SIZE: usize = 256*1024;
         static mut HEAP_MEM: [MaybeUninit<u8>; HEAP_SIZE] = [MaybeUninit::uninit(); HEAP_SIZE];
         unsafe { HEAP.init(HEAP_MEM.as_ptr() as usize, HEAP_SIZE) }
     }
